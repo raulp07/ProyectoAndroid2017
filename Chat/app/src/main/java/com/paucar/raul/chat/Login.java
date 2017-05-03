@@ -8,20 +8,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.paucar.raul.chat.Mensajes.Mensajeria;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ChatActivity extends AppCompatActivity {
+import java.util.HashMap;
+
+public class Login extends AppCompatActivity {
 
     private EditText txtusuario,txtpassword;
     private Button btningresar;
 
-    private static String ip ="http://raulandroid.pe.hu/ArchivosPHP/Login_GETID.php?id=";
+    private static final String ip ="http://raulandroid.pe.hu/ArchivosPHP/Login_GETID.php?id=";
+    private static final String IP_Token="http://raulandroid.pe.hu/ArchivosPHP/Token_INSERT.php";
     private RequestQueue requestQueue;
     private VolleyRP volleyRP;
     String USER,PWD;
@@ -62,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ChatActivity.this,"Ocrrio un error con la coneccion",Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this,"Ocrrio un error con la coneccion",Toast.LENGTH_LONG).show();
             }
         });
         VolleyRP.addToQueue(solicitud,requestQueue,this,volleyRP);
@@ -80,9 +86,13 @@ public class ChatActivity extends AppCompatActivity {
                 String id = jsondatos.getString("id");
                 String pwd = jsondatos.getString("password");
                 if (id.equals(USER) && pwd.equals(PWD)){
-                    Toast.makeText(this,"Bienvenido",Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(this,NuevaActividad.class);
-                    startActivity(i);
+                    String Token =FirebaseInstanceId.getInstance().getToken();
+                    if (Token != null) {
+                        //JSONObject js =new JSONObject(Token);
+                        //String token_ = js.getString("token");
+                        subirToken(Token);
+                    }else Toast.makeText(this,"No se genero el token",Toast.LENGTH_LONG).show();
+
                 }else{
                     Toast.makeText(this,"La contraseña es incorrecta",Toast.LENGTH_LONG).show();
                 }
@@ -95,5 +105,33 @@ public class ChatActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void subirToken(String token){
+        HashMap<String,String> hashMapToekn = new HashMap<>();
+        hashMapToekn.put("id",USER);
+        hashMapToekn.put("token", token);
+
+        JsonObjectRequest solicitud = new JsonObjectRequest(Request.Method.POST,IP_Token,new JSONObject(hashMapToekn),new Response.Listener<JSONObject>(){
+
+            @Override
+            public void onResponse(JSONObject response) {
+                //verificar_login(response);
+                try {
+                    Toast.makeText(Login.this,response.getString("resultado"),Toast.LENGTH_LONG).show();
+                }catch (JSONException e){}
+
+                Intent i = new Intent(Login.this,Mensajeria.class);
+                i.putExtra("key_emisor",USER);
+                startActivity(i);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Login.this,"El token no se pudo subir a la base de datos",Toast.LENGTH_LONG).show();
+            }
+        });
+        VolleyRP.addToQueue(solicitud,requestQueue,this,volleyRP);
+
     }
 }

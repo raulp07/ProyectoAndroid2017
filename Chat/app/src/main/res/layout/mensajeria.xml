@@ -38,12 +38,23 @@
             android:id="@+id/appBarLayout"
             android:theme="@style/AppTheme.AppBarOverLay"
             >
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:navigationIcon="?attr/homeAsUpIndicator"></android.support.v7.widget.Toolbar>
+                android:orientation="horizontal"
+                >
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:navigationIcon="?attr/homeAsUpIndicator"></android.support.v7.widget.Toolbar>
+                <EditText
+                    android:id="@+id/receptor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView

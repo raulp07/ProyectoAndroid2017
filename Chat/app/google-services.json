@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "476946045211",
+    "firebase_url": "https://proyecto-android-chat.firebaseio.com",
+    "project_id": "proyecto-android-chat",
+    "storage_bucket": "proyecto-android-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476946045211:android:2c9b39932f5085c9",
+        "android_client_info": {
+          "package_name": "com.paucar.raul.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476946045211-n7sgkn2uo1sum0lods0e9i7tgo6hgjdr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsLjTMnRBN7O2mRrzfiIIBsJfF5z-3Dsc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
